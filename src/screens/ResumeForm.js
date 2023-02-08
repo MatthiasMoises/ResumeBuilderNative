@@ -5,6 +5,7 @@ import { i18n } from '../helpers/TranslationKeys'
 import Header from '../components/ui/Header'
 import UserImagePicker from '../components/UserImagePicker'
 import { useStorage } from '../hooks/useStorage'
+import RoundedButton from '../components/ui/RoundedButton'
 
 i18n.locale = getLocales()[0].languageCode
 
@@ -22,7 +23,7 @@ const ResumeForm = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={{ paddingBottom: 100 }}>
+      <View style={{ paddingBottom: 75 }}>
         <Header headline={i18n.t('resumeFormHeadline')} />
 
         <View style={styles.details}>
@@ -37,7 +38,8 @@ const ResumeForm = ({ navigation }) => {
           <UserImagePicker
             i18n={i18n}
             currentImage={userData.imageUrl}
-            onUpdateImage={(e) => handleInputChange(e, 'imageUrl')} />
+            onUpdateImage={(e) => handleInputChange(e, 'imageUrl')}
+          />
 
           <TextInput style={styles.textinput}
             placeholder={i18n.t('enterProfessionalTitle')}
@@ -135,22 +137,16 @@ const ResumeForm = ({ navigation }) => {
           />
         </View>
         <View>
-          <TouchableOpacity style={styles.buttonContainer}>
-            <Button
-              title={i18n.t('createResume')}
-              style={styles.button}
-              color="#397006"
-              onPress={() => storeUserData()}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonContainer}>
-            <Button
-              title={i18n.t('deleteData')}
-              style={styles.button}
-              color="#700639"
-              onPress={() => handleRemoveUserData()}
-            />
-          </TouchableOpacity>
+          <RoundedButton
+            title={i18n.t('createResume')}
+            color="#397006"
+            handlePress={() => storeUserData()}
+          />
+          <RoundedButton
+            title={i18n.t('deleteData')}
+            color="#700639"
+            handlePress={() => handleRemoveUserData()}
+          />
         </View>
       </View>
     </ScrollView>
@@ -181,18 +177,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderBottomColor: '#f8f8f8',
     borderBottomWidth: 1
-  },
-  button: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    padding: 10,
-    marginTop: 5,
-    marginBottom: 20,
-    borderRadius: 15,
-  },
-  buttonContainer: {
-    marginTop: 10,
-    marginBottom: 10
   }
 })
 

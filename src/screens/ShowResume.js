@@ -1,4 +1,4 @@
-import { ScrollView, Text, View, Image, StyleSheet, Button } from 'react-native'
+import { ScrollView, Text, View, Image, StyleSheet } from 'react-native'
 import { getLocales } from 'expo-localization'
 import * as Print from 'expo-print'
 import { shareAsync } from 'expo-sharing'
@@ -7,6 +7,7 @@ import { i18n } from '../helpers/TranslationKeys'
 import Header from '../components/ui/Header'
 import { generateHtml } from '../helpers/PdfDocument'
 import { useStorage } from '../hooks/useStorage'
+import RoundedButton from '../components/ui/RoundedButton'
 
 i18n.locale = getLocales()[0].languageCode
 
@@ -120,11 +121,10 @@ const ShowResume = () => {
           </Text>
         </View>
         <View>
-          <Button
+          <RoundedButton
             title={i18n.t('createPdf')}
-            style={styles.button}
             color="#397006"
-            onPress={() => createPdf()}
+            handlePress={() => createPdf()}
           />
         </View>
       </View>
@@ -154,14 +154,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#d3d3d3',
-  },
-  button: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    padding: 10,
-    marginTop: 5,
-    marginBottom: 20,
-    borderRadius: 15,
   }
 })
 

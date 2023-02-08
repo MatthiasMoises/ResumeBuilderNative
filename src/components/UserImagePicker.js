@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Image, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Image, View, StyleSheet } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
+import RoundedButton from './ui/RoundedButton'
 
 const UserImagePicker = ({ i18n, currentImage, onUpdateImage }) => {
   const [image, setImage] = useState(null);
@@ -28,23 +29,25 @@ const UserImagePicker = ({ i18n, currentImage, onUpdateImage }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.buttonContainer}>
-        <Button title={i18n.t('pickImage')} onPress={pickImage} />
-      </TouchableOpacity>
-      {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+    <View>
+      <RoundedButton
+        title={i18n.t('pickImage')}
+        color="#2596be"
+        handlePress={() => pickImage()}
+      />
+      <View style={styles.imageContainer}>
+        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  imageContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'center'
-  },
-  buttonContainer: {
-    marginBottom: 15,
+    marginTop: 15,
+    marginBottom: 15
   }
 })
 
