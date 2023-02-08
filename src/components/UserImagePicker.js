@@ -19,15 +19,13 @@ const UserImagePicker = ({ i18n, currentImage, onUpdateImage }) => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-    });
-
-    console.log(result);
+    })
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
       onUpdateImage(result.assets[0].uri)
     }
-  };
+  }
 
   return (
     <View style={styles.container}>

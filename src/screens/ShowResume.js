@@ -1,41 +1,21 @@
-import { useState, useEffect } from 'react'
 import { ScrollView, Text, View, Image, StyleSheet, Button } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { getLocales } from 'expo-localization'
 import * as Print from 'expo-print'
 import { shareAsync } from 'expo-sharing'
 
-import { settings } from '../config/settings'
 import { i18n } from '../helpers/TranslationKeys'
 import Header from '../components/ui/Header'
-import { showCustomAlert } from '../helpers/CustomAlert'
 import { generateHtml } from '../helpers/PdfDocument'
+import { useStorage } from '../hooks/useStorage'
 
 i18n.locale = getLocales()[0].languageCode
 
 const ShowResume = () => {
-  const [userDetails, setUserDetails] = useState({})
-
-  useEffect(() => {
-    getUserDetails()
-  }, [])
-
-  const getUserDetails = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem(settings.storageKey)
-      const storageUserDetails = jsonValue != null ? JSON.parse(jsonValue) : null
-
-      if (storageUserDetails) {
-        setUserDetails({ ...storageUserDetails })
-      }
-    } catch (e) {
-      showCustomAlert('Error', e.message)
-    }
-  }
+  const { userData } = useStorage()
 
   const createPdf = async () => {
     try {
-      const html = await generateHtml(userDetails)
+      const html = await generateHtml(userData)
 
       const { uri } = await Print.printToFileAsync({ html })
       await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' })
@@ -52,17 +32,17 @@ const ShowResume = () => {
         <View style={styles.details}>
           <Text style={styles.titleText}>{i18n.t('headlinePersonalDetails')}</Text>
           <Image
-            source={{ uri: userDetails.imageUrl }}
+            source={{ uri: userData.imageUrl }}
             style={{ width: 80, height: 80 }}
           />
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('name')}: </Text>
-            <Text>{userDetails.fullName}</Text>
+            <Text>{userData.fullName}</Text>
           </Text>
 
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('professionalTitle')}: </Text>
-            <Text>{userDetails.fullName}</Text>
+            <Text>{userData.fullName}</Text>
           </Text>
         </View>
 
@@ -70,17 +50,17 @@ const ShowResume = () => {
           <Text style={styles.titleText}>{i18n.t('headlineContactDetails')}</Text>
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('phoneNumber')}: </Text>
-            <Text>{userDetails.phoneNo}</Text>
+            <Text>{userData.phoneNo}</Text>
           </Text>
 
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('email')}: </Text>
-            <Text>{userDetails.email}</Text>
+            <Text>{userData.email}</Text>
           </Text>
 
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('websiteLink')}: </Text>
-            <Text>{userDetails.website}</Text>
+            <Text>{userData.website}</Text>
           </Text>
         </View>
 
@@ -88,22 +68,22 @@ const ShowResume = () => {
           <Text style={styles.titleText}>{i18n.t('headlineContactDetails')}</Text>
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('company')}: </Text>
-            <Text>{userDetails.company}</Text>
+            <Text>{userData.company}</Text>
           </Text>
 
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('role')}: </Text>
-            <Text>{userDetails.jobTitle}</Text>
+            <Text>{userData.jobTitle}</Text>
           </Text>
 
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('startAndEndDates')}: </Text>
-            <Text>{userDetails.jobStartDate} - {userDetails.jobEndDate}</Text>
+            <Text>{userData.jobStartDate} - {userData.jobEndDate}</Text>
           </Text>
 
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('jobExperience')}: </Text>
-            <Text>{userDetails.experience}</Text>
+            <Text>{userData.experience}</Text>
           </Text>
         </View>
 
@@ -111,32 +91,32 @@ const ShowResume = () => {
           <Text style={styles.titleText}>{i18n.t('headlineProfileDetails')}</Text>
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('profileSummary')}: </Text>
-            <Text>{userDetails.profSummary}</Text>
+            <Text>{userData.profSummary}</Text>
           </Text>
 
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('certificate')}: </Text>
-            <Text>{userDetails.certificate}</Text>
+            <Text>{userData.certificate}</Text>
           </Text>
 
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('collegeName')}: </Text>
-            <Text>{userDetails.collegeName}</Text>
+            <Text>{userData.collegeName}</Text>
           </Text>
 
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('startAndEndDates')}: </Text>
-            <Text>{userDetails.colStartDate} - {userDetails.colEndDate}</Text>
+            <Text>{userData.colStartDate} - {userData.colEndDate}</Text>
           </Text>
 
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('skill')}: </Text>
-            <Text>{userDetails.skill}</Text>
+            <Text>{userData.skill}</Text>
           </Text>
 
           <Text style={styles.text}>
             <Text style={styles.key}>{i18n.t('hobby')}: </Text>
-            <Text>{userDetails.hobby}</Text>
+            <Text>{userData.hobby}</Text>
           </Text>
         </View>
         <View>
